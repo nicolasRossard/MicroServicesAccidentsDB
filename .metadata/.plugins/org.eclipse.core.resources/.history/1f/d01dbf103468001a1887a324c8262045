@@ -1,0 +1,33 @@
+package com.insa.clientuiService.web.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+ * 
+ * Controller using vehicule-service
+ */
+@Controller
+@RequestMapping(value="/VehiculesDB")
+public class VehiculesDBController {
+	private String titleMessage;
+	/************************************** Vehicule CONTROLLER PART ***************************************/
+	@GetMapping(value="/")
+	public ModelAndView vehiculesDB() {
+		System.out.println("/VehiculesDB/");
+		Map<String, Object> model = new HashMap<String, Object>();
+		/* Name HTML PAGE */
+		String viewName = "vehiculesDB-home";
+		
+		/* Title HTML */
+		titleMessage = "Vehicules Database";
+		model.put("titleMessage", titleMessage);		
+		
+		return new ModelAndView(viewName,model);
+	}
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value=""/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="accident"/>
+			<item value="accId"/>
+			<item value="victId"/>
+			<item value="try"/>
+			<item value="Accident"/>
+			<item value="Victim"/>
+			<item value="victimtItem"/>
+			<item value="victimtT"/>
+			<item value="viewname"/>
+			<item value="model.put"/>
+			<item value="model.add"/>
+			<item value="isUpdate"/>
+			<item value="isupdate"/>
+			<item value="httpStatus"/>
+			<item value="http."/>
+		</list>
+		<list key="replacehistory">
+			<item value="this.accId"/>
+			<item value="this.victId"/>
+			<item value="Victim"/>
+			<item value="this.restTemplate.exchange"/>
+			<item value="this.restTemplate = null;"/>
+			<item value="this.restTemplate=null"/>
+			<item value=""/>
+			<item value="//@Api"/>
+			<item value="@Api"/>
+			<item value="int"/>
+			<item value="accidentRepository"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="786"/>
+		<item key="DIALOG_Y_ORIGIN" value="142"/>
+		<item key="DIALOG_WIDTH" value="248"/>
+		<item key="DIALOG_HEIGHT" value="354"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-21|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+</section>

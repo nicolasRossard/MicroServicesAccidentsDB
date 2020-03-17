@@ -1,0 +1,242 @@
+package com.insa.clientuiService.web.controller;
+
+
+import java.util.List;
+import java.util.Random;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+import com.insa.clientuiService.entities.Accident;
+import com.insa.clientuiService.entities.Victim;
+
+/**
+ * 
+ * Controller which generate accidents and victims
+ * IMPORTANT this controller knows the number of victims or accidents which are already created manually
+ * with victId and accId. To improve this controller, we need to find the last Id used for an accident or a victim directly in their database
+ * 
+ */
+@Controller
+public class GenerateDBController {
+	/* Use Eureka */
+	@Autowired
+	private DiscoveryClient discoveryClient;
+	/* last Accident ID used + 1 (4 accidents are alrealdy in DB */
+	private int victId=5;
+	
+	/* last Victim ID used + 1 (4 Victims are alrealdy in DB */
+	int accId=5;
+	
+	/* initialize Vehicules (4 vehicules are already created) */
+	//int vehId =5;
+	
+	
+	/**
+	 * Generate Accidents and victims
+	 * Return homepage.html : the main page
+	 * @return ModelAndView homepage.html
+	 */	
+	@GetMapping("/Generate")
+	public ModelAndView home(@RequestParam(required = true) String nbGen) {
+		System.out.println("/Generate : nb accidents = "+nbGen);
+		generateDB(Integer.parseInt(nbGen));
+		System.out.println("- accId = "+this.accId);
+		System.out.println("- victId = "+this.victId);
+
+		/* Redirect Page */
+		RedirectView redirectView = new RedirectView();
+		//redirectView.setStatusCode(HttpStatus.OK);
+		redirectView.setUrl("/");
+
+		return new ModelAndView(redirectView);
+	}
+	
+	
+	
+	/**
+	 * Generate Accidents and victims (10 accidents and random victims)
+	 * 
+	 * @param nbAccGen number of Accidents to generate
+	 * functions genAcc and genVictim are used
+	 */	
+	private void generateDB(int nbAccGen) {
+		System.out.println("GenerateDB=" +nbAccGen);
+
+		int nbAccCreated =0;
+		int nbVictimsGen=0;
+		//int nbVehGen=0;
+		String numVeh;
+		int catu;
+		while (nbAccCreated <nbAccGen) {
+			/* Creation Accident */
+			genAcc(this.accId);
+			for(int nbVeh=1;nbVeh<=randInt(2,3);nbVeh++) {
+				/* put numVeh */
+				switch (nbVeh) {
+				  case 1:
+				    numVeh = "A";
+				    //genVeh( TODO);
+				    //nbVehGen++;
+				    catu=1;
+				    /* Generate Driver */
+				    genVictim(this.victId,this.accId,numVeh,catu);
+				    this.victId++;
+				    nbVictimsGen++;
+				    /* Generate passengers */
+				    for (int i = 0;i < randInt(0,4);i++) {
+				    	genVictim(this.victId,this.accId,numVeh,2);
+				    	this.victId++;
+				    	nbVictimsGen++;
+				    }
+				    break;
+				  case 2:
+				    numVeh = "B";
+				    //genVeh( TODO);
+				    //nbVehGen++;
+				    catu=1;
+				    /* Generate Driver */
+				    genVictim(this.victId,this.accId,numVeh,catu);
+				    this.victId++;
+				    nbVictimsGen++;
+				    /* Generate passengers */
+				    for (int i = 0;i < randInt(0,4);i++) {
+				    	genVictim(this.victId,this.accId,numVeh,2);
+				    	this.victId++;
+				    	nbVictimsGen++;
+				    }
+				    break;
+				  case 3:
+					  numVeh="C";
+					  //genVeh( TODO);
+					  //nbVehGen++;
+					  catu=1;
+					   /* Generate Driver */
+					  genVictim(this.victId,this.accId,numVeh,catu);
+					  this.victId++;
+					  nbVictimsGen++;
+					   /* Generate passengers */
+					  for (int i = 0;i < randInt(0,4);i++) {
+						   genVictim(this.victId,this.accId,numVeh,2);
+						   this.victId++;
+						   nbVictimsGen++;
+					   }					  
+				    break;
+				}
+			}
+			/* Generate victims as pedestrians */
+			for (int nbVictPed=0;nbVictPed<randInt(0,1);nbVictPed++) {
+				genVictim(this.victId,this.accId,null,randInt(3,4));
+				nbVictimsGen++;
+				this.victId++;
+			}
+			/* Update numAcc */
+			this.accId++;
+			/* Update Accident generated */
+			nbAccCreated++;
+		}
+		System.out.println(" - Number victims created : " + nbVictimsGen);
+		System.out.println(" - Number accidents created : " + nbAccCreated);
+		
+	}
+	
+	/**
+	 * Generate an Accident and save it in its dataBase
+	 * @param numAcc Accident ID
+	 */	
+	private void genAcc(int numAcc) {
+		System.out.println("GenAcc numAcc="+numAcc);
+		Accident accident = new Accident(numAcc,randInt(2005,2016),randInt(1,2),randInt(1,9));
+		//System.out.println(accident.toString());
+		/* POST NEW ACCIDENT */
+		/* Add accident to the DataBase */
+		/* Get AccidentURL by Eureka */
+		List<ServiceInstance> instances = discoveryClient.getInstances("accident-service");
+		/* Get the first instance of accident-service RIBBON TO CHOOSE AUTOMATICALLY */
+		ServiceInstance serviceInstance = instances.get(0);
+
+		/* Save the URL */
+		String baseUrl = serviceInstance.getUri().toString();
+
+		/* URL findAll */
+		baseUrl = baseUrl + "/Accidents";
+
+		/* Post Accident */
+		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<Accident> request = new HttpEntity<>(accident);
+		ResponseEntity<Accident> response = restTemplate.exchange(baseUrl, HttpMethod.POST, request, Accident.class);
+		/* Check if everything is good */
+		Accident accidentSave = response.getBody();
+		System.out.println("\t" + accidentSave.toString() + "Satus : "+response.getStatusCode());
+	}
+	
+	/**
+	 * Generate an Victim and save it in its dataBase
+	 * @param numVict Victim ID
+	 * @param numAcc Accident ID
+	 * @param numVeh Vehicule ID could be null if category of victim is a pedestrian
+	 * @param catu Category of victim
+	 */	
+	private void genVictim(int numVict, int numAcc, String numVeh, int catu) {
+		System.out.println("GenVict numVic="+numVict +",numAcc="+numAcc +", numVeh="+numVeh+", catu="+catu);
+		Victim victim;
+		/* Case Victim in a car */
+		if(catu<3) {
+			victim = new Victim(numVict, numAcc, numVeh,catu,randInt(1,4),randInt(1,2),randInt(1950,2016));
+		}else /* case victim is a pedestrian */
+		{
+			victim = new Victim(numVict, numAcc, null ,catu,randInt(1,4),randInt(1,2),randInt(1950,2016));
+		}
+		System.out.println(victim.toString());
+		/* POST NEW VICTIM */
+		/* Add victim to the DataBase */
+		/* Get Victim URL by Eureka */
+		List<ServiceInstance> instances = discoveryClient.getInstances("victim-service");
+		/* Get the first instance of victim-service RIBBON TO CHOOSE AUTOMATICALLY */
+		ServiceInstance serviceInstance = instances.get(0);
+
+		/* Save the URL */
+		String baseUrl = serviceInstance.getUri().toString();
+
+		/* URL findAll */
+		baseUrl = baseUrl + "/Victims";
+		System.out.println(baseUrl);
+		/* Post Victim */
+		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<Victim> request = new HttpEntity<>(victim);
+		ResponseEntity<Victim> response = restTemplate.exchange(baseUrl, HttpMethod.POST, request, Victim.class);
+
+		/* Check if everything is good */
+		Victim victimSave = response.getBody();
+		System.out.println("\t" + victimSave.toString() + "Satus : "+response.getStatusCode());
+	}
+	
+	/**
+	 * Returns a pseudo-random number between min and max, inclusive.
+	 * The difference between min and max can be at most
+	 * <code>Integer.MAX_VALUE - 1</code>.
+	 *
+	 * @param min Minimum value
+	 * @param max Maximum value.  Must be greater than min.
+	 * @return Integer between min and max, inclusive.
+	 * @see java.util.Random#nextInt(int)
+	 */
+	private int randInt(int min, int max) {
+
+	    Random rand = new Random();
+
+	    // nextInt is normally exclusive of the top value,
+	    // so add 1 to make it inclusive
+	    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+	    return randomNum;
+	}
+}
