@@ -1,0 +1,74 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<title>Accidents List App</title>
+</head>
+<body>
+	<div class="container">
+ 		<nav class = "navbar navbar-expand-sm navbar-dark bg-secondary">   
+            <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
+               <ul class = "navbar-nav mr-auto">
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/">HOME</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/AccidentsDB/">Accidents</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VictimsDB/">Victims</a>
+                  </li>
+                  <li class = "nav-item ">
+                     <a class = "nav-link" href = "/VehiculesDB/">Vehicules</a>
+                  </li>
+               </ul>
+            </div>
+        </nav>
+		<h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+		
+		<form action="#"  th:action="@{/DataProcessing}" method="get" th:object="${dataProcessing}">  
+<!-- 			<h3> Select years:</h3>
+			<div>
+				<label for="c">From </label>
+				<select th:field="*{yearBeg}">
+				    <option th:each="i : ${#numbers.sequence(2005, 2016)}" th:value="${i}" th:text="${i}"></option>
+				</select>
+				<label for="c">to </label>
+				<select th:field="*{yearEnd}">
+				    <option th:each="i : ${#numbers.sequence(2005, 2016)}" th:value="${i}" th:text="${i}"></option>
+				</select>
+			</div> -->
+			
+		
+			<h3> Select Informations:</h3>	
+			<div>
+				<div class = "col-sm-4">
+					<label><input type="checkbox" name="isVictNumber" th:checked="*{isVictNumber}"> Number of Victims</label>
+				</div>
+				<div class = "col-sm-4">
+					<label><input type="checkbox" name="isAccNumber" th:checked="*{isAccNumber}"> Number of Accidents</label>
+				</div>
+				<div class = "col-sm-4">
+					<label><input type="checkbox" name="isVehNumber" th:checked="*{isVehNumber}"> Number of Vehicules</label>
+				</div>
+	
+		        <div class = "form-group row">
+					<div class = "col-sm-10">
+						<button type = "submit" class = "btn btn-primary">Submit</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- MODIFY TO PERMIT TO CHOOSE HOW MANY ACCIDENTS WE WANT TO GENERATE -->
+		<div class = "form-group row " th:with="nbToGen=10">
+               <label for = "numAcc" class = "col-sm-2 col-form-label">Accidents to generate</label>
+               <div class = "col-sm-4">
+                  <input name="nbToGen" th:value=${nbToGen} type = "number" min="1" class = "form-control" readonly placeholder = "Integer Type not null"/>
+               </div>
+		<td><a href="#" class="btn btn-info" role="button"
+					th:href="@{/Generate(nbGen=${nbToGen})}">Generate</a></td>
+		</div>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,143 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<title>Accidents List App</title>
+</head>
+<body>
+	<div class="container">
+ 		<nav class = "navbar navbar-expand-sm navbar-dark bg-secondary">   
+            <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
+               <ul class = "navbar-nav mr-auto">
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/">HOME</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/AccidentsDB/">Accidents</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VictimsDB/">Victims</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VehiculesDB/">Vehicules</a>
+                  </li>
+               </ul>
+            </div>
+        </nav>
+		
+		<!-- CREATE FORM -->  
+		<form th:unless="${isUpdate}" action="#"  method="post" th:action="@{/AccidentsDB/Create}" th:object="${accidentItem}" >
+            <h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+            <hr/>
+            <div class = "form-group row ">
+               <label for = "numAcc" class = "col-sm-2 col-form-label">Accident ID</label>
+               <div class = "col-sm-4">
+                  <input th:field="*{numAcc}" type = "number" min="1" class = "form-control" placeholder = "Integer Type not null"/>
+               </div>
+            </div>
+
+			<div class = "form-group row ">
+				<label for = "year" class = "col-sm-2 col-form-label mr-0">Year</label>
+				<div class = "col-sm-4">
+					<select th:field="*{year}">
+					    <option th:each="i : ${#numbers.sequence(2005, 2016)}" th:value="${i}" th:text="${i}"></option>
+					</select>
+				</div>
+            </div>
+            
+			<div class = "form-group row ">
+               <label for = "agg" class = "col-sm-2 col-form-label mr-0">Agglomeration</label>
+               <div class = "col-sm-4">
+					<select th:field="*{agg}">
+						    <option th:value="1" th:text="Outside"></option>
+						    <option th:value="2" th:text="Agglomeration"></option>
+					</select>               
+				</div>
+            </div>
+            
+			<div class = "form-group row">
+            	<label for = "atm" class = "col-sm-2 col-form-label">Weather condition</label>
+            	<div class = "col-sm-4">           	
+					<select th:field="*{atm}">
+						    <option th:value="1" th:text="'Normal'"></option>
+						    <option th:value="2" th:text="'Light rain'"></option>
+						    <option th:value="3" th:text="'Heavy rain'"></option>
+						    <option th:value="4" th:text="'Snow-hail'"></option>
+						    <option th:value="5" th:text="'Fog-smoke'"></option>
+						    <option th:value="6" th:text="'Strong wind-storm'"></option>
+						    <option th:value="7" th:text="'Dazzling weather'"></option>
+						    <option th:value="8" th:text="'Cloudy weather'"></option>
+						    <option th:value="9" th:text="'Other'"></option>
+					</select>            
+				</div>
+			</div>
+            <div class = "form-group row">
+               <div class = "col-sm-10">
+                  <button type = "submit" class = "btn btn-primary">Create</button>
+               </div>
+            </div>
+            
+         </form>
+         
+         <!-- Update FORM -->
+         <form th:if="${isUpdate}" action="#"  method="post" th:action="@{/AccidentsDB/Update}" th:object="${accidentItem}" >
+            <h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+            <hr/>
+            <div class = "form-group row ">
+               <label for = "numAccUp" class = "col-sm-2 col-form-label">Accident ID</label>
+               <div class = "col-sm-4">
+				    <input class="form-control"
+			           type="text"
+			           th:field="${accidentItem.numAcc}"
+			           th:value="${accidentItem.numAcc}"
+			           readonly="readonly" />
+               </div>
+            </div>
+			
+
+			<div class = "form-group row ">
+				<label for = "year" class = "col-sm-2 col-form-label mr-0">Year</label>
+				<div class = "col-sm-4">
+					<select th:field="*{year}">
+					    <option th:each="i : ${#numbers.sequence(2005, 2016)}" th:value="${i}" th:text="${i}"></option>
+					</select>
+				</div>
+            </div>
+            
+			<div class = "form-group row ">
+               <label for = "agg" class = "col-sm-2 col-form-label mr-0">Agglomeration</label>
+               <div class = "col-sm-4">
+					<select th:field="*{agg}">
+						    <option th:value="1" th:text="Outside"></option>
+						    <option th:value="2" th:text="Agglomeration"></option>
+					</select>               
+				</div>
+            </div>
+            
+			<div class = "form-group row">
+            	<label for = "atm" class = "col-sm-2 col-form-label">Weather condition</label>
+            	<div class = "col-sm-4">           	
+					<select th:field="*{atm}">
+						    <option th:value="1" th:text="'Normal'"></option>
+						    <option th:value="2" th:text="'Light rain'"></option>
+						    <option th:value="3" th:text="'Heavy rain'"></option>
+						    <option th:value="4" th:text="'Snow-hail'"></option>
+						    <option th:value="5" th:text="'Fog-smoke'"></option>
+						    <option th:value="6" th:text="'Strong wind-storm'"></option>
+						    <option th:value="7" th:text="'Dazzling weather'"></option>
+						    <option th:value="8" th:text="'Cloudy weather'"></option>
+						    <option th:value="9" th:text="'Other'"></option>
+					</select>            
+				</div>
+			</div>
+            <div class = "form-group row">
+               <div class = "col-sm-10">
+                  <button type = "submit" class = "btn btn-primary">Update</button>
+               </div>
+            </div>
+            
+         </form>
+ 
+	</div>
+</body>
+</html>

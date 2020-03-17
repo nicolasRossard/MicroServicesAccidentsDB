@@ -1,0 +1,74 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<title>Accidents List App</title>
+</head>
+<body>
+	<div class="container">
+ 		<nav class = "navbar navbar-expand-sm navbar-dark bg-secondary">   
+            <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
+               <ul class = "navbar-nav mr-auto">
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/">HOME</a>
+                  </li>
+                  <li class = "nav-item active">
+                     <a class = "nav-link" href = "/AccidentsDB/">Accidents</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VictimsDB/">Victims</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VehiculesDB/">Vehicules</a>
+                  </li>
+               </ul>
+            </div>
+        </nav>
+		<h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+		</hr>
+	 	 
+	 	 <form action="#" method="get" th:action="@{/AccidentsDB/all}">
+			<button type = "submit" class = "btn btn-primary">Accidents List</button>
+		</form>
+	
+
+		<form action="#" method="get" th:action="@{/AccidentsDB/NumAcc}">
+	            <h2 class = "mt-4">Accident Information</h2>
+	            <hr/>
+	            <div class = "form-group row ">
+	               <label for = "idAcc" class = "col-sm-2 col-form-label">Accident ID</label>
+	               <div class = "col-sm-4">
+	                  <input type="number" name="idAcc" th:value="${idAcc}" class="form-control" placeholder="Insert numAcc" />
+	               </div>
+	            </div>	
+				<div class = "col-sm-10">
+                  <button type = "submit" name ="getInfo" class = "btn btn-primary">Get Accident</button>
+				</div>
+		</form>
+		
+		<form action="#" method="get" th:action="@{/AccidentsDB/Delete}">
+	            <h2 class = "mt-4">Delete Accident</h2>
+	            <hr/>
+	            <div class = "form-group row ">
+	               <label for = "idAccToDelete" class = "col-sm-2 col-form-label">Accident ID</label>
+	               <div class = "col-sm-4">
+	                  <input type="number" name="idAcc" th:value="${idAcc}" class="form-control" placeholder="Insert numAcc" />
+	               </div>
+	            </div>	
+				<div class = "col-sm-10">
+                  <button type = "submit" name ="getInfo" class = "btn btn-primary">Delete Accident</button>
+				</div>
+		</form>
+	     
+		<form action="#" method="get" th:action="@{/AccidentsDB/AccidentFormPage}">
+			<h2 class = "mt-4">Create Accident</h2>
+			<hr/>
+            <div class = "form-group row">
+               <div class = "col-sm-10">
+                  <button type = "submit" name ="createObject" class = "btn btn-primary">Create</button>
+               </div>
+            </div>
+         </form>
+	</div>
+</body>
+</html>

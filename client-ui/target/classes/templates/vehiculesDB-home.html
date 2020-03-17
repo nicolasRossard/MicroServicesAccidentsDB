@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<title>Accidents List App</title>
+</head>
+<body>
+<body>
+	<div class="container">
+ 		<nav class = "navbar navbar-expand-sm navbar-dark bg-secondary">   
+            <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
+               <ul class = "navbar-nav mr-auto">
+                  <li class = "nav-item">
+                     <a class = "nav-link active" href = "/">HOME</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/AccidentsDB/">Accidents</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VictimsDB/">Victims</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VehiculesDB/">Vehicules</a>
+                  </li>
+               </ul>
+            </div>
+        </nav>
+		<h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+	</div>
+</body>
+</html>

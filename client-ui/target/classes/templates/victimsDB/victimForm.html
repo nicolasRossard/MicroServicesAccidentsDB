@@ -1,0 +1,179 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<title>Victims DataBase</title>
+</head>
+<body>
+	<div class="container">
+ 		<nav class = "navbar navbar-expand-sm navbar-dark bg-secondary">   
+            <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
+               <ul class = "navbar-nav mr-auto">
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/">HOME</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/AccidentsDB/">Accidents</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VictimsDB/">Victims</a>
+                  </li>
+                  <li class = "nav-item">
+                     <a class = "nav-link" href = "/VehiculesDB/">Vehicules</a>
+                  </li>
+               </ul>
+            </div>
+        </nav>
+		
+		<!-- CREATE FORM -->  
+		<form th:unless="${isUpdate}" action="#"  method="post" th:action="@{/VictimsDB/Create}" th:object="${victimItem}" >
+            <h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+            <hr/>
+            <div class = "form-group row ">
+               <label for = "numVict" class = "col-sm-2 col-form-label">Victim ID</label>
+               <div class = "col-sm-4">
+                  <input th:field="*{numVict}" type = "number" min="1" class = "form-control" placeholder = "Integer Type not null"/>
+               </div>
+            </div>
+            <div class = "form-group row ">
+               <label for = "numAcc" class = "col-sm-2 col-form-label">Accident ID</label>
+               <div class = "col-sm-4">
+                  <input th:field="*{numAcc}" type = "number" min="1" class = "form-control" placeholder = "Integer Type not null"/>
+               </div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "numVeh" class = "col-sm-2 col-form-label">Vehicule ID</label>
+               <div class = "col-sm-4">
+                  <input th:field="*{numVeh}" type = "text" max-length="1" class = "form-control" placeholder = "Alpha letter" pattern="[A-Z]|(NULL)"
+                  autofocus required title ="1 uppercase alphabet letter [A-Z]|(NULL) NULL if pedestrian"/>
+               </div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "catu" class = "col-sm-2 col-form-label"> Victim category</label>
+          		<div class = "col-sm-4">           	
+					<select th:field="*{catu}">
+						    <option th:value="1" th:text="'Driver'"></option>
+						    <option th:value="2" th:text="'Passenger'"></option>
+						    <option th:value="3" th:text="'Pedestrian'"></option>
+						    <option th:value="4" th:text="'rollerBlading pedestrian'"></option>
+					</select>            
+				</div>
+            </div>
+           	<div class = "form-group row ">
+               <label for = "grav" class = "col-sm-2 col-form-label"> Gravity of the accident</label>
+          		<div class = "col-sm-4">           	
+					<select th:field="*{grav}">
+						    <option th:value="1" th:text="'Safe'"></option>
+						    <option th:value="2" th:text="'Killed'"></option>
+						    <option th:value="3" th:text="'Injured hospitalized'"></option>
+						    <option th:value="4" th:text="'Lightly injured'"></option>
+					</select>            
+				</div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "sex" class = "col-sm-2 col-form-label">Sex</label>
+          		<div class = "col-sm-4">           	
+					<select th:field="*{sex}">
+						    <option th:value="1" th:text="'Man'"></option>
+						    <option th:value="2" th:text="'Women'"></option>
+					</select>            
+				</div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "birthDate" class = "col-sm-2 col-form-label">Date of birth</label>
+               <div class = "col-sm-4">
+                  <input th:field="*{birthDate}" type = "number" class = "form-control" placeholder = ""/>
+               </div>
+            </div>
+            
+            <div class = "form-group row">
+               <div class = "col-sm-10">
+                  <button type = "submit" class = "btn btn-primary">Create</button>
+               </div>
+            </div>
+            
+         </form>
+         
+         <!-- Update FORM -->
+         <form th:if="${isUpdate}" action="#"  method="post" th:action="@{/VictimsDB/Update}" th:object="${victimItem}" >
+            <h2  class = "mt-4"><span th:text="${titleMessage}"> TITLE</h2>
+            <hr/>
+			<div class = "form-group row ">
+               <label for = "numVictUp" class = "col-sm-2 col-form-label">Victim ID</label>
+               <div class = "col-sm-4">
+				    <input class="form-control"
+			           type="text"
+			           th:field="*{numVict}"
+			           th:value="*{numVict}"
+			           readonly="readonly" />
+            	</div>
+            </div>
+            <div class = "form-group row ">
+               <label for = "numAccUp" class = "col-sm-2 col-form-label">Accident ID</label>
+               <div class = "col-sm-4">
+				    <input class="form-control"
+			           type="text"
+			           th:field="*{numAcc}"
+			           th:value="*{numAcc}"
+			           readonly="readonly" />
+               </div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "numVehUp" class = "col-sm-2 col-form-label">Vehicule ID</label>
+               <div class = "col-sm-4">
+				    <input class="form-control"
+			           type="text"
+			           th:field="*{numVeh}"
+			           th:value="*{numVeh}"
+			           readonly="readonly" />
+               </div>
+            </div>
+			
+			<div class = "form-group row ">
+               <label for = "catu" class = "col-sm-2 col-form-label"> Victim category</label>
+          		<div class = "col-sm-4">           	
+					<select th:field="*{catu}">
+						    <option th:value="1" th:text="'Driver'"></option>
+						    <option th:value="2" th:text="'Passenger'"></option>
+						    <option th:value="3" th:text="'Pedestrian'"></option>
+						    <option th:value="4" th:text="'rollerBlading pedestrian'"></option>
+					</select>            
+				</div>
+            </div>
+           	<div class = "form-group row ">
+               <label for = "grav" class = "col-sm-2 col-form-label"> Gravity of the accident</label>
+          		<div class = "col-sm-4">           	
+					<select th:field="*{grav}">
+						    <option th:value="1" th:text="'Safe'"></option>
+						    <option th:value="2" th:text="'Killed'"></option>
+						    <option th:value="3" th:text="'Injured hospitalized'"></option>
+						    <option th:value="4" th:text="'Lightly injured'"></option>
+					</select>            
+				</div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "sex" class = "col-sm-2 col-form-label">Sex</label>
+          		<div class = "col-sm-4">           	
+					<select th:field="*{sex}">
+						    <option th:value="1" th:text="'Man'"></option>
+						    <option th:value="2" th:text="'Women'"></option>
+					</select>            
+				</div>
+            </div>
+			<div class = "form-group row ">
+               <label for = "birthDate" class = "col-sm-2 col-form-label">Date of birth</label>
+               <div class = "col-sm-4">
+                  <input th:field="*{birthDate}" type = "number" class = "form-control" placeholder = ""/>
+               </div>
+            </div>
+            <div class = "form-group row">
+               <div class = "col-sm-10">
+                  <button type = "submit" class = "btn btn-primary">Update</button>
+               </div>
+            </div>
+            
+         </form>
+ 
+	</div>
+</body>
+</html>
